@@ -1,14 +1,17 @@
+from autobahn.twisted import WebSocketServerFactory
 from zope.interface import implementer
-from twisted.internet import protocol as _protocol
+
+from protocol.app_protocols.ws_protocol import WsAppProtocol
 from protocol.factory.abstraction import ILighterFactory
 
 
 @implementer(ILighterFactory)
-class LighterFactory(_protocol.ServerFactory):
-    protocol = None  # assign later
+class LighterFactory(WebSocketServerFactory):
+    protocol = WsAppProtocol
 
     def __init__(self, service):
         self.service = service
+        super().__init__()
 
     def connection_made(self):
         self.service.connection_made()

@@ -1,7 +1,8 @@
 from typing import Union, Optional, Tuple, Dict
 
-from autobahn.twisted import WebSocketServerProtocol
+from autobahn.twisted.websocket import WebSocketServerProtocol
 from autobahn.websocket import ConnectionRequest
+from autobahn.websocket.protocol import WebSocketProtocol
 from twisted.internet.protocol import connectionDone
 from twisted.python.failure import Failure
 
@@ -20,6 +21,7 @@ class WsAppProtocol(WebSocketServerProtocol):
 
     def onMessage(self, payload, isBinary):
         self.factory.handle_request(payload)
+        super().onMessage(payload, isBinary)
 
     def connectionLost(self, reason: Failure = connectionDone):
         self.factory.connection_lost()

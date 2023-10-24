@@ -12,5 +12,5 @@ class LighterService(service.Service):
     def connection_lost(self):
         print('Connection lost!')
 
-    def handle_request(self):
-        print('handling request...')
+    def handle_request(self, data):
+        print('handling request...', data)

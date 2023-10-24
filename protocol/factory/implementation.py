@@ -19,5 +19,5 @@ class LighterFactory(WebSocketServerFactory):
     def connection_lost(self):
         self.service.connection_lost()
 
-    def handle_request(self):
-        self.service.handle_request()
+    def handle_request(self, data):
+        self.service.handle_request(data)

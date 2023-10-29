@@ -16,7 +16,7 @@ class WsAppProtocol(WebSocketServerProtocol):
 
     def onConnect(self, request: ConnectionRequest) -> Union[Optional[str], Tuple[Optional[str], Dict[str, str]]]:
         self._peer = LighterWsPeer(self)
-        self.factory.connection_made()
+        self.factory.connection_made(self._peer)
         return super().onConnect(request)
 
     def onMessage(self, payload, isBinary):
@@ -26,3 +26,6 @@ class WsAppProtocol(WebSocketServerProtocol):
     def connectionLost(self, reason: Failure = connectionDone):
         self.factory.connection_lost(self._peer)
         super().connectionLost(reason)
+
+    def send_message(self, data):
+        self.sendMessage(data, isBinary=False)

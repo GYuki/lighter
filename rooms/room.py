@@ -7,6 +7,7 @@ class Room(object):
 
     def join_room(self, peer):
         self._container.add_player(peer)
+        peer.set_room(self)
 
     def leave_room(self, peer):
         self._container.remove_player(peer)

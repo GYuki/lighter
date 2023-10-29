@@ -20,9 +20,9 @@ class WsAppProtocol(WebSocketServerProtocol):
         return super().onConnect(request)
 
     def onMessage(self, payload, isBinary):
-        self.factory.handle_request(payload)
+        self.factory.handle_request(payload, self._peer)
         super().onMessage(payload, isBinary)
 
     def connectionLost(self, reason: Failure = connectionDone):
-        self.factory.connection_lost()
+        self.factory.connection_lost(self._peer)
         super().connectionLost(reason)

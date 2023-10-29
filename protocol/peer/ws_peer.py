@@ -6,5 +6,14 @@ class LighterWsPeer(BasePeer):
         super().__init__(protocol)
         self._room = None
 
+    @property
+    def room(self):
+        return self._room
+
+    def disconnect(self):
+        super().disconnect()
+        self._room.leave_room(self)
+        self._room = None
+
     def set_room(self, room):
         self._room = room

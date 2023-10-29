@@ -27,4 +27,4 @@ class BasePeer(object):
         self._protocol.send_message(self._prepare_data(data))
 
     def disconnect(self):
-        self._protocol.disconnect()
+        pass

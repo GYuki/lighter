@@ -15,7 +15,7 @@ class PlayerContainer(object):
 
     def remove_player(self, peer):
         player_index = next((i for i, p in enumerate(self._players) if p.peer == peer), -1)
-        if 0 < player_index < len(self._players):
+        if 0 <= player_index < len(self._players):
             print('Remove player with peer:', self._players[player_index].peer)
             del self._players[player_index]
 

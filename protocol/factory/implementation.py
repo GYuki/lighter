@@ -13,8 +13,8 @@ class LighterFactory(WebSocketServerFactory):
         self.service = service
         super().__init__()
 
-    def connection_made(self):
-        self.service.connection_made()
+    def connection_made(self, peer):
+        self.service.connection_made(peer)
 
     def connection_lost(self, peer):
         self.service.connection_lost(peer)

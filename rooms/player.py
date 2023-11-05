@@ -11,6 +11,10 @@ class Player(object):
     def peer(self):
         return self._peer
 
+    @property
+    def is_active(self):
+        return self._peer is not None
+
     def deactivate(self):
         self._peer = None
 

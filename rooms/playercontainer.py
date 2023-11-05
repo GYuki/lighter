@@ -1,3 +1,4 @@
+from rooms.joinmodes import JoinModes
 from rooms.player import Player
 
 
@@ -24,3 +25,46 @@ class PlayerContainer(object):
 
     def get_player_by_id(self, _id):
         return next((player for player in self._players if player.id == _id), None)
+
+    def get_player_by_peer(self, peer):
+        return next((player for player in self._players if player.peer == peer), None)
+
+    def _verify_can_join(self, peer, join_mode):
+        player = self.get_player_by_peer(peer)
+        if player is not None:
+            print('Peer already joined')
+            return False, player
+
+        if peer.id < 1:
+            print('Peer id is 0')
+            return False, player
+
+        player = self.get_player_by_id(peer.id)
+        if player is not None:
+            if player.is_active:
+                print('Active joiner')  # check this moment later
+                return False, player
+
+            if join_mode != JoinModes.RejoinOnly and join_mode != JoinModes.RejoinOrJoin:
+                print('Inactive joiner')
+                return False, player
+
+            return True, player
+
+        if join_mode == JoinModes.RejoinOnly:
+            print('Rejoiner not found')
+            return False, player
+
+        return True, player
+
+    def try_add_peer_to_game(self, peer, actor_nr, join_mode):
+        success, player = self._verify_can_join(peer, join_mode)
+        if not success:
+            return False
+        
+        if player is None:
+            self.add_player(peer)
+        else:
+            player.reactivate(peer)
+
+        return True

@@ -3,14 +3,22 @@ from rooms.player import Player
 
 
 class PlayerContainer(object):
-    def __init__(self):
+    def __init__(self, max_actors=32):
         self._players = []
+        self._max_actors = max_actors
+        self._number_stack = []
+        for i in range(self._max_actors, 0, -1):
+            self._number_stack.append(i)
 
-# Peers in add_player and remove_player later will be substituted to user_id and PlayerContainer won't know about
-# peers at all.
+    def _pop_number_stack(self):
+        return self._number_stack.pop()
+
+    def _push_number_stack(self, item):
+        self._number_stack.append(item)
 
     def add_player(self, peer):
         player = Player(peer)
+        player.player_nr = self._pop_number_stack()
         print('Add player with peer:', player.peer)
         self._players.append(player)
 
@@ -57,7 +65,7 @@ class PlayerContainer(object):
 
         return True, player
 
-    def try_add_peer_to_game(self, peer, actor_nr, join_mode):
+    def try_add_peer_to_game(self, peer, join_mode):
         success, player = self._verify_can_join(peer, join_mode)
         if not success:
             return False

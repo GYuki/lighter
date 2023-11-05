@@ -2,6 +2,7 @@ class Player(object):
     def __init__(self, peer):
         self._peer = peer
         self._id = peer.id
+        self.player_nr = 0
 
     @property
     def id(self):

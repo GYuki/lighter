@@ -21,3 +21,6 @@ class PlayerContainer(object):
 
     def broadcast_to_all(self, data):
         [player.send_message(data) for player in self._players]
+
+    def get_player_by_id(self, _id):
+        return next((player for player in self._players if player.id == _id), None)

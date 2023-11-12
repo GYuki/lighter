@@ -1,5 +1,6 @@
 from rooms.joinmodes import JoinModes
 from rooms.player import Player
+from rooms.resultcode import ResultCode, DebugMessage
 
 
 class PlayerContainer(object):
@@ -16,7 +17,7 @@ class PlayerContainer(object):
     def _push_number_stack(self, item):
         self._number_stack.append(item)
 
-    def add_player(self, peer):
+    def _add_player(self, peer):
         player = Player(peer)
         player.player_nr = self._pop_number_stack()
         print('Add player with peer:', player.peer)
@@ -40,39 +41,34 @@ class PlayerContainer(object):
     def _verify_can_join(self, peer, join_mode):
         player = self.get_player_by_peer(peer)
         if player is not None:
-            print('Peer already joined')
-            return False, player
+            return ResultCode.PeerAlreadyJoined, player
 
         if peer.id < 1:
-            print('Peer id is 0')
-            return False, player
+            return ResultCode.PeerIdIsNull, player
 
         player = self.get_player_by_id(peer.id)
         if player is not None:
             if player.is_active:
-                print('Active joiner')  # check this moment later
-                return False, player
+                # check this moment later
+                return ResultCode.ActiveJoiner, player
 
             if join_mode != JoinModes.RejoinOnly and join_mode != JoinModes.RejoinOrJoin:
-                print('Inactive joiner')
-                return False, player
+                return ResultCode.InactiveJoiner, player
 
-            return True, player
+            return ResultCode.OK, player
 
         if join_mode == JoinModes.RejoinOnly:
-            print('Rejoiner not found')
-            return False, player
+            return ResultCode.RejoinerNotFound, player
 
-        return True, player
+        return ResultCode.OK, player
 
     def try_add_peer_to_game(self, peer, join_mode):
-        success, player = self._verify_can_join(peer, join_mode)
-        if not success:
-            return False
-        
-        if player is None:
-            self.add_player(peer)
-        else:
-            player.reactivate(peer)
+        result_code, player = self._verify_can_join(peer, join_mode)
+        if result_code == ResultCode.OK:
+            if player is None:
+                self._add_player(peer)
+            else:
+                player.reactivate(peer)
 
-        return True
+        print(DebugMessage[result_code])
+        return result_code

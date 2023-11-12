@@ -18,3 +18,6 @@ class RoomCache(object):
         self._rooms[_id] = Room(_id)
         print('Room', _id, 'created!')
         return self._rooms[_id]
+
+
+room_cache = RoomCache()

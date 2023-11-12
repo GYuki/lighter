@@ -10,8 +10,8 @@ class Room(object):
     def id(self):
         return self._id
 
-    def join_room(self, peer):
-        self._container.add_player(peer)
+    def join_room(self, peer, join_mode):
+        self._container.try_add_peer_to_game(peer, join_mode)
         peer.set_room(self)
 
     def leave_room(self, peer):

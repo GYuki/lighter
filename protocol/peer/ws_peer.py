@@ -7,7 +7,7 @@ class LighterWsPeer(BasePeer):
     def __init__(self, protocol):
         super().__init__(protocol)
         self._room = None
-        self._id = 1
+        self._id = 0
 
     def _prepare_data(self, data):
         return json.dumps(data).encode('utf8')

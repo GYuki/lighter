@@ -3,6 +3,7 @@ import json
 from pydiator_core.mediatr import pydiator
 
 from protocol.request.codes import RequestCode
+from rooms.commands.authcommand import AuthCommandRequest
 from rooms.commands.createcommand import CreateCommandRequest
 from rooms.commands.joincommand import JoinCommandRequest
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest
@@ -12,6 +13,8 @@ from rooms.resultcode import DebugMessage
 class RequestController(object):
     async def handle(self, raw_request, peer):
         request = json.loads(raw_request)
+        data = {}
+
         if request['cmd'] == RequestCode.CreateRoom:
             result = await pydiator.send(
                 CreateCommandRequest(
@@ -33,7 +36,6 @@ class RequestController(object):
             data = {
                     'room_name': result.room_name
                 }
-
         elif request['cmd'] == RequestCode.RaiseEvent:
             result = await pydiator.send(
                 RaiseEventCommandRequest(
@@ -41,8 +43,13 @@ class RequestController(object):
                     data=request['data']
                 )
             )
-
-            data = {}
+        elif request['cmd'] == RequestCode.Auth:
+            result = await pydiator.send(
+                AuthCommandRequest(
+                    peer=peer,
+                    peer_id=request['data']['id']
+                )
+            )
         else:
             print('could not parse request')
             return

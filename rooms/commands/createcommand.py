@@ -38,8 +38,7 @@ class CreateCommandResponse(BaseResponse):
 
 
 class CreateCommandHandler(BaseHandler):
-    @inlineCallbacks
-    def handle(self, req: CreateCommandRequest):
+    async def handle(self, req: CreateCommandRequest):
         room = self._get_room_from_room_cache(req.room_id)
 
         if room is None:
@@ -53,7 +52,7 @@ class CreateCommandHandler(BaseHandler):
             if result == ResultCode.OK:
                 req.peer.set_room(room)
 
-        return defer.succeed(response)
+        return response
 
     def _get_room_from_room_cache(self, _id):
         return room_cache.try_create_room(_id)

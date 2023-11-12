@@ -2,6 +2,8 @@ from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 from twisted.internet import defer
 from twisted.internet.defer import inlineCallbacks
 
+from rooms.resultcode import ResultCode
+
 
 class RaiseEventCommandRequest(BaseRequest):
     def __init__(self, peer, data):
@@ -29,7 +31,6 @@ class RaiseEventCommandResponse(BaseResponse):
 
 
 class RaiseEventCommandHandler(BaseHandler):
-    @inlineCallbacks
-    def handle(self, req: RaiseEventCommandRequest):
+    async def handle(self, req: RaiseEventCommandRequest):
         req.peer.room.broadcast_data_to_all_players(req.data)
-        return defer.succeed(None)
+        return RaiseEventCommandResponse(ResultCode.OK)

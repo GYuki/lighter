@@ -45,8 +45,7 @@ class CreateCommandHandler(BaseHandler):
             response = self._generate_failed_response()
 
         else:
-            result = room.try_add_peer_to_game(req.peer, JoinModes.Create)
-
+            result = room.join_room(req.peer, JoinModes.Create)
             response = self._generate_success_response(result, room.id)
 
             if result == ResultCode.OK:

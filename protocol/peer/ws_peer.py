@@ -1,3 +1,5 @@
+import json
+
 from protocol.peer.abstraction import BasePeer
 
 
@@ -5,7 +7,10 @@ class LighterWsPeer(BasePeer):
     def __init__(self, protocol):
         super().__init__(protocol)
         self._room = None
-        self._id = 0
+        self._id = 1
+
+    def _prepare_data(self, data):
+        return json.dumps(data).encode('utf8')
 
     @property
     def room(self):

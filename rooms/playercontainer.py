@@ -11,6 +11,10 @@ class PlayerContainer(object):
         for i in range(self._max_actors, 0, -1):
             self._number_stack.append(i)
 
+    @property
+    def player_count(self):
+        return len(self._players)
+
     def _pop_number_stack(self):
         return self._number_stack.pop()
 

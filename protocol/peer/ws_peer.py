@@ -26,8 +26,11 @@ class LighterWsPeer(BasePeer):
 
     def disconnect(self):
         super().disconnect()
-        self._room.leave_room(self)
-        self._room = None
+        self.leave_room()
 
     def set_room(self, room):
         self._room = room
+
+    def leave_room(self):
+        self._room.leave_room(self)
+        self._room = None

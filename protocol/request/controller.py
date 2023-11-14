@@ -6,6 +6,7 @@ from protocol.request.codes import RequestCode
 from rooms.commands.authcommand import AuthCommandRequest
 from rooms.commands.createcommand import CreateCommandRequest
 from rooms.commands.joincommand import JoinCommandRequest
+from rooms.commands.leavecommand import LeaveRoomCommandRequest
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest
 from rooms.resultcode import DebugMessage
 
@@ -48,6 +49,12 @@ class RequestController(object):
                 AuthCommandRequest(
                     peer=peer,
                     peer_id=request['data']['id']
+                )
+            )
+        elif request['cmd'] == RequestCode.LeaveRoom:
+            result = await pydiator.send(
+                LeaveRoomCommandRequest(
+                    peer=peer
                 )
             )
         else:

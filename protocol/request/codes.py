@@ -3,3 +3,4 @@ class RequestCode(object):
     JoinRoom = 1
     RaiseEvent = 2
     Auth = 3
+    LeaveRoom = 4

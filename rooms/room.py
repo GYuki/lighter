@@ -1,10 +1,4 @@
-import asyncio
-
-from pydiator_core.mediatr import pydiator
-
-from rooms.notifications.playercountupdate import PlayerCountUpdateNotification
 from rooms.playercontainer import PlayerContainer
-from rooms.resultcode import ResultCode
 
 
 class Room(object):
@@ -20,13 +14,8 @@ class Room(object):
     def player_count(self):
         return self._container.player_count
 
-    async def join_room(self, peer, join_mode):
+    def join_room(self, peer, join_mode):
         result = self._container.try_add_peer_to_game(peer, join_mode)
-        if result == ResultCode.OK:
-            await pydiator.publish(PlayerCountUpdateNotification(
-                self._id,
-                self._container.player_count
-            ))
         return result
 
     def leave_room(self, peer):

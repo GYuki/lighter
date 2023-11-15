@@ -1,6 +1,4 @@
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
-from twisted.internet import defer
-from twisted.internet.defer import inlineCallbacks
 
 from rooms.joinmodes import JoinModes
 from rooms.resultcode import ResultCode
@@ -45,7 +43,7 @@ class CreateCommandHandler(BaseHandler):
             response = self._generate_failed_response()
 
         else:
-            result = await room.join_room(req.peer, JoinModes.Create)
+            result = room.join_room(req.peer, JoinModes.Create)
             response = self._generate_success_response(result, room.id)
 
             if result == ResultCode.OK:

@@ -6,7 +6,7 @@ from rooms.commands.createcommand import CreateCommandRequest, CreateCommandHand
 from rooms.commands.joincommand import JoinCommandRequest, JoinCommandHandler
 from rooms.commands.leavecommand import LeaveRoomCommandRequest, LeaveRoomCommandHandler
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest, RaiseEventCommandHandler
-from rooms.notifications.playercountupdate import PlayerCountUpdateNotification, PlayerCountUpdateSubscriber
+from rooms.notifications.playercountupdate import PlayerJoinedRoomNotification, PlayerJoinedRoomSubscriber
 from rooms.notifications.playerleftroom import PlayerLeftRoomSubscriber, PlayerLeftRoomNotification
 from rooms.notifications.roomdeleted import RoomDeletedNotification, RoomDeletedSubscriber
 
@@ -19,7 +19,7 @@ def mediator_set_up():
     container.register_request(AuthCommandRequest, AuthCommandHandler())
     container.register_request(LeaveRoomCommandRequest, LeaveRoomCommandHandler())
 
-    container.register_notification(PlayerCountUpdateNotification, [PlayerCountUpdateSubscriber()])
+    container.register_notification(PlayerJoinedRoomNotification, [PlayerJoinedRoomSubscriber()])
     container.register_notification(RoomDeletedNotification, [RoomDeletedSubscriber()])
     container.register_notification(PlayerLeftRoomNotification, [PlayerLeftRoomSubscriber()])
 

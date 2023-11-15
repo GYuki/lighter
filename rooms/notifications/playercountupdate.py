@@ -1,21 +1,16 @@
 from pydiator_core.interfaces import BaseNotification, BaseNotificationHandler
 
 
-class PlayerCountUpdateNotification(BaseNotification):
-    def __init__(self, room_id, player_count):
+class PlayerJoinedRoomNotification(BaseNotification):
+    def __init__(self, room):
         super().__init__()
-        self._room_id = room_id
-        self._player_count = player_count
+        self._room = room
 
     @property
-    def room_id(self):
-        return self._room_id
-
-    @property
-    def player_count(self):
-        return self._player_count
+    def room(self):
+        return self._room
 
 
-class PlayerCountUpdateSubscriber(BaseNotificationHandler):
-    async def handle(self, notification: PlayerCountUpdateNotification):
-        print(f'Update in room {notification.room_id}. Player count: {notification.player_count}')
+class PlayerJoinedRoomSubscriber(BaseNotificationHandler):
+    async def handle(self, notification: PlayerJoinedRoomNotification):
+        print(f'Update in room {notification.room.id}. Player count: {notification.room.player_count}')

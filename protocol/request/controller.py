@@ -8,6 +8,7 @@ from rooms.commands.createcommand import CreateCommandRequest
 from rooms.commands.joincommand import JoinCommandRequest
 from rooms.commands.leavecommand import LeaveRoomCommandRequest
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest
+from rooms.notifications.playercountupdate import PlayerJoinedRoomNotification
 from rooms.notifications.playerleftroom import PlayerLeftRoomNotification
 from rooms.resultcode import DebugMessage, ResultCode
 
@@ -24,6 +25,12 @@ class RequestController(object):
                     room_id=request['data']['room_name']
                 )
             )
+
+            if result.status == ResultCode.OK:
+                await pydiator.publish(PlayerJoinedRoomNotification(
+                    peer.room
+                ))
+
             data = {
                     'room_name': result.room_name
                 }
@@ -34,6 +41,11 @@ class RequestController(object):
                     room_id=request['data']['room_name']
                 )
             )
+
+            if result.status == ResultCode.OK:
+                await pydiator.publish(PlayerJoinedRoomNotification(
+                    peer.room
+                ))
 
             data = {
                     'room_name': result.room_name
@@ -53,7 +65,7 @@ class RequestController(object):
                 )
             )
         elif request['cmd'] == RequestCode.LeaveRoom:
-            room_id = peer.room.id
+            room = peer.room
             result = await pydiator.send(
                 LeaveRoomCommandRequest(
                     peer=peer
@@ -62,7 +74,7 @@ class RequestController(object):
             if result.status == ResultCode.OK:
                 await pydiator.publish(
                     PlayerLeftRoomNotification(
-                        room_id
+                        room
                     )
                 )
         else:

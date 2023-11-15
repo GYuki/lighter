@@ -8,7 +8,7 @@ from rooms.commands.createcommand import CreateCommandRequest
 from rooms.commands.joincommand import JoinCommandRequest
 from rooms.commands.leavecommand import LeaveRoomCommandRequest
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest
-from rooms.notifications.playercountupdate import PlayerJoinedRoomNotification
+from rooms.notifications.playerjoinedroom import PlayerJoinedRoomNotification
 from rooms.notifications.playerleftroom import PlayerLeftRoomNotification
 from rooms.resultcode import DebugMessage, ResultCode
 

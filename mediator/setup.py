@@ -6,7 +6,7 @@ from rooms.commands.createcommand import CreateCommandRequest, CreateCommandHand
 from rooms.commands.joincommand import JoinCommandRequest, JoinCommandHandler
 from rooms.commands.leavecommand import LeaveRoomCommandRequest, LeaveRoomCommandHandler
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest, RaiseEventCommandHandler
-from rooms.notifications.playercountupdate import PlayerJoinedRoomNotification, PlayerJoinedRoomSubscriber
+from rooms.notifications.playerjoinedroom import PlayerJoinedRoomNotification, PlayerJoinedRoomSubscriber
 from rooms.notifications.playerleftroom import PlayerLeftRoomSubscriber, PlayerLeftRoomNotification
 from rooms.notifications.roomdeleted import RoomDeletedNotification, RoomDeletedSubscriber
 

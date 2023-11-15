@@ -7,7 +7,6 @@ from rooms.commands.joincommand import JoinCommandRequest, JoinCommandHandler
 from rooms.commands.leavecommand import LeaveRoomCommandRequest, LeaveRoomCommandHandler
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest, RaiseEventCommandHandler
 from rooms.notifications.playercountupdate import PlayerCountUpdateNotification, PlayerCountUpdateSubscriber
-from rooms.notifications.playercreatedroom import PlayerCreatedRoomNotification, PlayerCreatedRoomSubscriber
 
 
 def mediator_set_up():
@@ -18,7 +17,6 @@ def mediator_set_up():
     container.register_request(AuthCommandRequest, AuthCommandHandler())
     container.register_request(LeaveRoomCommandRequest, LeaveRoomCommandHandler())
 
-    container.register_notification(PlayerCreatedRoomNotification, [PlayerCreatedRoomSubscriber()])
     container.register_notification(PlayerCountUpdateNotification, [PlayerCountUpdateSubscriber()])
 
     pydiator.ready(container=container)

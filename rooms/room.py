@@ -16,15 +16,13 @@ class Room(object):
     def id(self):
         return self._id
 
-    def join_room(self, peer, join_mode):
+    async def join_room(self, peer, join_mode):
         result = self._container.try_add_peer_to_game(peer, join_mode)
         if result == ResultCode.OK:
-            loop = asyncio.new_event_loop()
-            loop.run_until_complete(pydiator.publish(PlayerCountUpdateNotification(
+            await pydiator.publish(PlayerCountUpdateNotification(
                 self._id,
                 self._container.player_count
-            )))
-            loop.close()
+            ))
         return result
 
     def leave_room(self, peer):

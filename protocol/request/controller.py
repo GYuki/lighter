@@ -8,7 +8,8 @@ from rooms.commands.createcommand import CreateCommandRequest
 from rooms.commands.joincommand import JoinCommandRequest
 from rooms.commands.leavecommand import LeaveRoomCommandRequest
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest
-from rooms.resultcode import DebugMessage
+from rooms.notifications.playerleftroom import PlayerLeftRoomNotification
+from rooms.resultcode import DebugMessage, ResultCode
 
 
 class RequestController(object):
@@ -52,11 +53,18 @@ class RequestController(object):
                 )
             )
         elif request['cmd'] == RequestCode.LeaveRoom:
+            room_id = peer.room.id
             result = await pydiator.send(
                 LeaveRoomCommandRequest(
                     peer=peer
                 )
             )
+            if result.status == ResultCode.OK:
+                await pydiator.publish(
+                    PlayerLeftRoomNotification(
+                        room_id
+                    )
+                )
         else:
             print('could not parse request')
             return

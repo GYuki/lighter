@@ -16,6 +16,10 @@ class Room(object):
     def id(self):
         return self._id
 
+    @property
+    def player_count(self):
+        return self._container.player_count
+
     async def join_room(self, peer, join_mode):
         result = self._container.try_add_peer_to_game(peer, join_mode)
         if result == ResultCode.OK:

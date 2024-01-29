@@ -1,7 +1,9 @@
+from pydiator_core.mediatr import pydiator
 from twisted.application import service
 from twisted.internet.defer import ensureDeferred
 from zope.interface import implementer
 
+from protocol.notifications.servercreated import ServerCreatedNotification
 from protocol.request.controller import RequestController
 from protocol.service.abstraction import ILighterService
 
@@ -10,6 +12,15 @@ from protocol.service.abstraction import ILighterService
 class LighterService(service.Service):
     def __init__(self):
         self.request_controller = RequestController()
+
+    def service_created(self):
+        d = ensureDeferred(self._service_created())
+        d.addCallback(print)
+
+    async def _service_created(self):
+        await pydiator.publish(
+            ServerCreatedNotification()
+        )
 
     def connection_made(self, peer):
         print('Connection made!')

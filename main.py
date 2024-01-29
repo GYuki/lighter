@@ -16,6 +16,8 @@ ws_factory.service = ls
 ws_endpoint = endpoints.serverFromString(reactor, 'tcp:8000')
 ws_endpoint.listen(ws_factory)
 
-mediator_set_up()
-start_rabbit(application)
+mediator_set_up(start_rabbit(application))
+
+reactor.callLater(3, ls.service_created)
+
 reactor.run()

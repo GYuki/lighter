@@ -11,7 +11,7 @@ def start_rabbit(application):
             host=os.getenv("RABBITMQ_HOST", "127.0.0.1"),
             port=os.getenv("RABBITMQ_PORT", 5672),
             virtual_host="/",
-            credentials=pika.PlainCredentials(os.getenv("RABBITMQ_USER", "guest"), os.getenv("RABBITMQ_PASS", "guest"))
+            credentials=pika.PlainCredentials(os.getenv("RABBITMQ_USER", "adm"), os.getenv("RABBITMQ_PASS", "1"))
         )
     )
 
@@ -21,3 +21,4 @@ def start_rabbit(application):
     rps = RabbitPublisherService()
     rps.setServiceParent(application)
     rps.startService()
+    return rps

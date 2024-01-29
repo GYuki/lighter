@@ -1,5 +1,7 @@
 from pydiator_core.interfaces import BaseNotification, BaseNotificationHandler
 
+from rooms.notifications.rpsnotifications import RpsNotificationHandler
+
 
 class RoomDeletedNotification(BaseNotification):
     def __init__(self, room_id):
@@ -11,6 +13,8 @@ class RoomDeletedNotification(BaseNotification):
         return self._room_id
 
 
-class RoomDeletedSubscriber(BaseNotificationHandler):
+class RoomDeletedSubscriber(RpsNotificationHandler):
     async def handle(self, notification: RoomDeletedNotification):
-        print(f'Room with id {notification.room_id} deleted')
+        self._send_message('room_delete', {
+            'room_id': notification.room_id
+        })

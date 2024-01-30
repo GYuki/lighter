@@ -25,5 +25,5 @@ class LeaveRoomCommandResponse(BaseResponse):
 
 class LeaveRoomCommandHandler(BaseHandler):
     async def handle(self, req: LeaveRoomCommandRequest):
-        req.peer.leave_room()
+        req.peer.forced_disconnect()
         return LeaveRoomCommandResponse(ResultCode.OK)

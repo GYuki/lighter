@@ -9,6 +9,7 @@ from rooms.commands.leavecommand import LeaveRoomCommandRequest, LeaveRoomComman
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest, RaiseEventCommandHandler
 from rooms.notifications.playerjoinedroom import PlayerJoinedRoomNotification, PlayerJoinedRoomSubscriber
 from rooms.notifications.playerleftroom import PlayerLeftRoomSubscriber, PlayerLeftRoomNotification
+from rooms.notifications.roomcreated import RoomCreatedNotification, RoomCreatedSubscriber
 from rooms.notifications.roomdeleted import RoomDeletedNotification, RoomDeletedSubscriber
 
 
@@ -20,9 +21,10 @@ def mediator_set_up(rps):
     container.register_request(AuthCommandRequest, AuthCommandHandler())
     container.register_request(LeaveRoomCommandRequest, LeaveRoomCommandHandler())
 
-    container.register_notification(PlayerJoinedRoomNotification, [PlayerJoinedRoomSubscriber()])
-    container.register_notification(RoomDeletedNotification, [RoomDeletedSubscriber()])
-    container.register_notification(PlayerLeftRoomNotification, [PlayerLeftRoomSubscriber()])
+    container.register_notification(PlayerJoinedRoomNotification, [PlayerJoinedRoomSubscriber(rps)])
+    container.register_notification(RoomDeletedNotification, [RoomDeletedSubscriber(rps)])
+    container.register_notification(PlayerLeftRoomNotification, [PlayerLeftRoomSubscriber(rps)])
     container.register_notification(ServerCreatedNotification, [ServerCreatedSubscriber(rps)])
+    container.register_notification(RoomCreatedNotification, [RoomCreatedSubscriber(rps)])
 
     pydiator.ready(container=container)

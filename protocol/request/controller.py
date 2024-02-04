@@ -10,6 +10,7 @@ from rooms.commands.leavecommand import LeaveRoomCommandRequest
 from rooms.commands.raiseeventcommand import RaiseEventCommandRequest
 from rooms.notifications.playerjoinedroom import PlayerJoinedRoomNotification
 from rooms.notifications.playerleftroom import PlayerLeftRoomNotification
+from rooms.notifications.roomcreated import RoomCreatedNotification
 from rooms.resultcode import DebugMessage, ResultCode
 
 
@@ -27,6 +28,11 @@ class RequestController(object):
             )
 
             if result.status == ResultCode.OK:
+                await pydiator.publish(
+                    RoomCreatedNotification(
+                        peer.room.id
+                    )
+                )
                 await pydiator.publish(PlayerJoinedRoomNotification(
                     peer.room
                 ))
